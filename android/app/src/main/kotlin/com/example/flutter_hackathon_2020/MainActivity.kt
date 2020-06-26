@@ -1,4 +1,4 @@
-package com.example.flutter_hackathon_2020
+package org.hack20.flutterhood
 
 import io.flutter.embedding.android.FlutterActivity
 

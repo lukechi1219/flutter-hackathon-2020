@@ -1,6 +1,6 @@
-# flutter_hackathon_2020
+# flutterhood
 
-A new Flutter project.
+A new Flutter application.
 
 ## Getting Started
 
