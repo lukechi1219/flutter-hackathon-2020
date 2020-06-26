@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:floating_action_bubble/floating_action_bubble.dart';
+import 'ui/page/Notification.dart';
+import 'ui/page/Profile.dart';
+import 'ui/page/Home.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,92 +30,135 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Main(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class Main extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MainState createState() => _MainState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MainState extends State<Main> with SingleTickerProviderStateMixin {
+  Animation<double> _animation;
+  AnimationController _animationController;
 
-  void _incrementCounter() {
+  int _currentindex = 0;
+  final List<Widget> _pages = [Home(), Notify(), Profile()];
+  void onTapped(int index) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _currentindex = index;
     });
   }
 
   @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 260),
+    );
+
+    final curvedAnimation =
+        CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
+    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
+      //Init Floating Action Bubble
+      floatingActionButton: _currentindex == 0
+          ? BubbleFloat(animation: _animation,animationController: _animationController,)
+          : null,
+
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentindex,
+        onTap: onTapped,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications), title: Text("Notification")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person), title: Text("Profile"))
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      body: _pages[_currentindex],
+    );
+  }
+}
+
+class BubbleFloat extends StatelessWidget {
+  const BubbleFloat({
+    Key key,
+    @required AnimationController animationController,
+    @required Animation<double> animation,
+  })  : _animationController = animationController,
+        _animation = animation,
+        super(key: key);
+
+  final AnimationController _animationController;
+  final Animation<double> _animation;
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionBubble(
+      // Menu items
+      items: <Bubble>[
+        // Floating action menu item
+        Bubble(
+          title: "Story",
+          iconColor: Colors.white,
+          bubbleColor: Colors.blue,
+          icon: Icons.book,
+          titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+          onPress: () {
+            _animationController.reverse();
+          },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        // Floating action menu item
+        Bubble(
+          title: "Picture",
+          iconColor: Colors.white,
+          bubbleColor: Colors.blue,
+          icon: Icons.photo,
+          titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+          onPress: () {
+            _animationController.reverse();
+          },
+        ),
+        //Floating action menu item
+        Bubble(
+          title: "Action",
+          iconColor: Colors.white,
+          bubbleColor: Colors.blue,
+          icon: Icons.work,
+          titleStyle: TextStyle(fontSize: 16, color: Colors.white),
+          onPress: () {
+            _animationController.reverse();
+          },
+        ),
+      ],
+
+      // animation controller
+      animation: _animation,
+
+      // On pressed change animation state
+      onPress: () => _animationController.isCompleted
+          ? _animationController.reverse()
+          : _animationController.forward(),
+
+      // Floating Action button Icon color
+      iconColor: Colors.white,
+
+      // Flaoting Action button Icon
+      iconData: Icons.share,
+      backGroundColor: Colors.blue,
     );
   }
 }
