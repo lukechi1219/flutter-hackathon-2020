@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 import '../../injection_container.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -56,15 +57,7 @@ class _HomeState extends State<Home> {
   final Set<Marker> _markers = {};
   bool _switch = true;
   Widget splitter(data) {
-    return _switch == true
-        ? GoogleMap(
-            markers: data,
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: _center,
-              zoom: 15,
-            ))
-        : ListView();
+    // return ;
   }
 
   Row buildTripleFAB(BuildContext context) {
@@ -190,7 +183,7 @@ class _HomeState extends State<Home> {
 
   LocationData locationData;
 
-  void getNowLocation() async {
+  Future<LatLng> getNowLocation() async {
     Location location = new Location();
 
     bool _serviceEnabled;
@@ -202,7 +195,7 @@ class _HomeState extends State<Home> {
       _center = const LatLng(25.0326811, 121.5646961);
       if (!_serviceEnabled) {
         _center = const LatLng(25.0326811, 121.5646961);
-        return;
+        return _center;
       }
     }
 
@@ -212,12 +205,13 @@ class _HomeState extends State<Home> {
       _center = const LatLng(25.0326811, 121.5646961);
       if (_permissionGranted != PermissionStatus.granted) {
         _center = const LatLng(25.0326811, 121.5646961);
-        return;
+        return _center;
       }
     }
 
     locationData = await location.getLocation();
     _center = LatLng(locationData.latitude, locationData.longitude);
+    return _center;
   }
 
   @override
@@ -231,27 +225,40 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     //
 
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: buildTripleFAB(context),
-      body: Stack(children: <Widget>[
-        Container(
-            child: FutureBuilder(
-          future: getPostItems(),
-          builder: (context, snapshot) => splitter(snapshot.data),
-        )),
-        Positioned(
-            right: 10,
-            top: 10,
-            child: Switch(
-              onChanged: (value) {
-                setState(() {
-                  _switch = value;
-                });
-              },
-              value: _switch,
-            ))
-      ]),
+    return FutureProvider<LatLng>(
+      create: (context) => getNowLocation(),
+      child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: buildTripleFAB(context),
+        body: Stack(children: <Widget>[
+          Consumer<LatLng>(
+            builder: (context, latlng, child) => Container(
+                child: FutureBuilder(
+              future: getPostItems(),
+              builder: (context, snapshot) => _switch == true
+                  ? GoogleMap(
+                      markers: snapshot.data,
+                      onMapCreated: _onMapCreated,
+                      initialCameraPosition: CameraPosition(
+                        target: latlng,
+                        zoom: 15,
+                      ))
+                  : ListView(),
+            )),
+          ),
+          Positioned(
+              right: 10,
+              top: 10,
+              child: Switch(
+                onChanged: (value) {
+                  setState(() {
+                    _switch = value;
+                  });
+                },
+                value: _switch,
+              ))
+        ]),
+      ),
     );
   }
 
