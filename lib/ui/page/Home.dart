@@ -45,23 +45,39 @@ class Home extends StatelessWidget {
     );
   }
 
-//  Marker marker = Marker();
   final Set<Marker> _markers = {};
+  bool _switch = true;
+  Widget splitter() {
+    return _switch == true
+        ? GoogleMap(
+            markers: _markers,
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: CameraPosition(
+              target: _center,
+              zoom: 15,
+            ))
+        : ListView();
+  }
 
   @override
   Widget build(BuildContext context) {
     //
     _addTestMarker();
 
-    return Center(
-      child: GoogleMap(
-          markers: _markers,
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 15,
-          )),
-    );
+    return Stack(children: <Widget>[
+      Container(child: splitter()),
+      Positioned(
+          right: 10,
+          top: 10,
+          child: Switch(
+            onChanged: (value) {
+              setState(() {
+                _switch = value;
+              });
+            },
+            value: _switch,
+          ))
+    ]);
   }
 
   /*
