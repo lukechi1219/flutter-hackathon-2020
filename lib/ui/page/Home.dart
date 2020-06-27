@@ -204,17 +204,7 @@ class _HomeState extends State<Home> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: buildTripleFAB(context),
 
-      // bottomNavigationBar: BottomNavigationBar(
-      //   currentIndex: _currentindex,
-      //   onTap: onTapped,
-      //   items: [
-      //     BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
-      //     // BottomNavigationBarItem(
-      //     //     icon: Icon(Icons.notifications), title: Text("Notification")),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(Icons.person), title: Text("Profile"))
-      //   ],
-      // ),
+
 
       body: Stack(children: <Widget>[
         Container(
