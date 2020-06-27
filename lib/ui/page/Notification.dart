@@ -6,7 +6,7 @@ class Notify extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: ListView(
-          //TODO: Get Notify Message
+
       children: <Widget>[
         NotifyBuild(icon: Icons.mail, title: "title", content: "content")
       ],

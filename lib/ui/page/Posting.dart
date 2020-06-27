@@ -312,7 +312,6 @@ class _PostingState extends State<Posting> {
                 prefixIcon: Icon(
                   Icons.location_on,
                   color: Colors.black54,
-                  //TODO: Get Location Method
                 ),
                 hintText: "Location",
                 hintStyle: kHintTextStyle),

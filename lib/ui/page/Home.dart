@@ -241,7 +241,6 @@ class _HomeState extends State<Home> {
    * test
    */
 
-  //TODO:Create Ontap for InfoWindow
   void _addTestMarker(PostItem postItem) {
     _markers.add(Marker(
       // This marker id can be anything that uniquely identifies each marker.
