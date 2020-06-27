@@ -252,6 +252,7 @@ class _HomeState extends State<Home> {
         snippet: postItem.text,
       ),
       onTap: () {
+        //TODO : 重做UI
         showCupertinoModalPopup(
             context: context,
             builder: (cxt) => CupertinoActionSheet(
