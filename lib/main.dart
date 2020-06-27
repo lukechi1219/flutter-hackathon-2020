@@ -70,49 +70,13 @@ class _MainState extends State<Main> {
     super.initState();
   }
 
-  Widget addFab() {
-    return _currentindex == 0
-        ? FloatingActionButton(
-            heroTag: "add",
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Posting(),
-                  ));
-            },
-            child: Icon(Icons.add),
-          )
-        : null;
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Container(
-            width: 50,
-            child: FittedBox(
-              child: FloatingActionButton(
-                heroTag: "Member",
-                onPressed: () {},
-                child: Text("Member"),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 150),
-            child: FloatingActionButton(
-              heroTag: "Compile",
-              child: Text("Compile"),
-            ),
-          ),
-          addFab(),
-        ],
-      ),
+      floatingActionButton: buildTripleFAB(context),
 
       // bottomNavigationBar: BottomNavigationBar(
       //   currentIndex: _currentindex,
@@ -127,6 +91,61 @@ class _MainState extends State<Main> {
       // ),
 
       body: _pages[_currentindex],
+    );
+  }
+
+  Row buildTripleFAB(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      
+      children: <Widget>[
+        Container(
+          width: 75,
+          child: FittedBox(
+            child: FloatingActionButton(
+              heroTag: "Member",
+              onPressed: () {},
+              child: Text(
+                "Member",
+                maxLines: 1,
+                textScaleFactor: 0.8,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 150),
+          child: Container(
+            width: 100,
+            child: FittedBox(
+              child: FloatingActionButton(
+                onPressed: () {},
+                heroTag: "Compile",
+                child: Text(
+                  "Compile",
+                  textScaleFactor: 0.8,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          width: 75,
+          child: FittedBox(
+            child: FloatingActionButton(
+              heroTag: "add",
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Posting(),
+                    ));
+              },
+              child: Icon(Icons.add),
+            ),
+          ),
+        )
+      ],
     );
   }
 }
