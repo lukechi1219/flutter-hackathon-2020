@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../data/entities/post_itrm.dart';
 import 'package:flutterhood/core/usecases/usecase.dart';
@@ -74,7 +75,7 @@ class _HomeState extends State<Home> {
     return Stack(children: <Widget>[
       Container(
           child: FutureBuilder(
-            future: getPostItems(),
+        future: getPostItems(),
         builder: (context, snapshot) => splitter(snapshot.data),
       )),
       Positioned(
@@ -102,12 +103,29 @@ class _HomeState extends State<Home> {
       markerId: MarkerId('testMarker' + DateTime.now().millisecond.toString()),
       position: postItem.location,
       infoWindow: InfoWindow(
-        onTap: () {
-          print("object");
-        },
+        onTap: () {},
         title: postItem.creator,
         snippet: postItem.text,
       ),
+      onTap: () {
+        showCupertinoModalPopup(
+            context: context,
+            builder: (cxt) => CupertinoActionSheet(
+                  title: Text(
+                    postItem.creator,
+                    textScaleFactor: 1.5,
+                  ),
+                  message: Text(
+                    postItem.text,
+                  ),
+                  cancelButton: CupertinoActionSheetAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("Accept"),
+                  ),
+                ));
+      },
       icon: BitmapDescriptor.defaultMarker,
     ));
   }

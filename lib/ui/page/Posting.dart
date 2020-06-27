@@ -18,7 +18,8 @@ final kLabelStyle = TextStyle(
 );
 
 final kBoxDecorationStyle = BoxDecoration(
-  color: Colors.white70,
+  color: Colors.white,
+  border: Border.all(color: Colors.black, width: 0.5),
   // color: Color(0xFF6CA8F1),
   borderRadius: BorderRadius.circular(10.0),
   boxShadow: [
@@ -41,6 +42,7 @@ class _PostingState extends State<Posting> {
   TextEditingController location = TextEditingController();
   TextEditingController deadline = TextEditingController();
   TextEditingController description = TextEditingController();
+  TextEditingController phone = TextEditingController();
 
   void posting() {
     print(dateTime.toString());
@@ -48,6 +50,7 @@ class _PostingState extends State<Posting> {
     print(description.text);
     //TODO : Upload Data
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,17 +63,21 @@ class _PostingState extends State<Posting> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                "Posting",
+                "Help Request",
                 style: TextStyle(fontSize: 30),
               ),
               SizedBox(
                 height: 20,
               ),
-              buildLocationinput(pickResult),
+              buildDeadlineinput(context),
               SizedBox(
                 height: 15,
               ),
-              buildDeadlineinput(context),
+              buildPhoneInput(),
+              SizedBox(
+                height: 15,
+              ),
+              buildLocationinput(pickResult),
               SizedBox(
                 height: 15,
               ),
@@ -89,7 +96,7 @@ class _PostingState extends State<Posting> {
                       borderRadius: BorderRadius.circular(30)),
                   color: Colors.white,
                   child: Text(
-                    "Save",
+                    "Submit",
                     style: TextStyle(
                       color: Color.fromRGBO(54, 55, 149, 1),
                       letterSpacing: 1.5,
@@ -106,16 +113,10 @@ class _PostingState extends State<Posting> {
     );
   }
 
-
-
-  Column buildDescriptinput() {
+  Column buildPhoneInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          "Description",
-          style: kLabelStyle,
-        ),
         SizedBox(
           height: 10,
         ),
@@ -124,6 +125,38 @@ class _PostingState extends State<Posting> {
           decoration: kBoxDecorationStyle,
           height: 60,
           child: TextField(
+            keyboardType: TextInputType.phone,
+            controller: phone,
+            style: TextStyle(color: Colors.black54),
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14),
+                prefixIcon: Icon(
+                  Icons.phone,
+                  color: Colors.black54,
+                ),
+                hintText: "Contact Number",
+                hintStyle: kHintTextStyle),
+          ),
+        )
+      ],
+    );
+  }
+
+  Column buildDescriptinput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+          alignment: Alignment.topLeft,
+          decoration: kBoxDecorationStyle,
+          height: 200,
+          child: TextField(
+              maxLines: null,
+
             controller: description,
             style: TextStyle(color: Colors.black54),
             decoration: InputDecoration(
@@ -131,7 +164,7 @@ class _PostingState extends State<Posting> {
                 contentPadding: EdgeInsets.only(top: 14),
                 prefixIcon: Icon(
                   Icons.star,
-                  color: Colors.white,
+                  color: Colors.black54,
                 ),
                 hintText: "Description",
                 hintStyle: kHintTextStyle),
@@ -147,10 +180,6 @@ class _PostingState extends State<Posting> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          "DeadLine",
-          style: kLabelStyle,
-        ),
         SizedBox(
           height: 10,
         ),
@@ -183,9 +212,9 @@ class _PostingState extends State<Posting> {
                 contentPadding: EdgeInsets.only(top: 14),
                 prefixIcon: Icon(
                   Icons.timer,
-                  color: Colors.white,
+                  color: Colors.black54,
                 ),
-                hintText: "Deadline",
+                hintText: "Duration",
                 hintStyle: kHintTextStyle),
           ),
         )
@@ -224,10 +253,6 @@ class _PostingState extends State<Posting> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          "Location",
-          style: kLabelStyle,
-        ),
         SizedBox(
           height: 10,
         ),
@@ -248,7 +273,7 @@ class _PostingState extends State<Posting> {
                 contentPadding: EdgeInsets.only(top: 14),
                 prefixIcon: Icon(
                   Icons.location_on,
-                  color: Colors.white,
+                  color: Colors.black54,
                   //TODO: Get Location Method
                 ),
                 hintText: "Location",
