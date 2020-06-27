@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:intl/intl.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 
 import '../../key.dart';
+import '../../data/entities/post_itrm.dart';
 
 final kHintTextStyle = TextStyle(
   color: Colors.black54,
@@ -45,10 +47,18 @@ class _PostingState extends State<Posting> {
   TextEditingController phone = TextEditingController();
 
   void posting() {
-    print(dateTime.toString());
-    print(pickResult);
-    print(description.text);
+    var postitem = PostItem(
+        createTime: DateTime.now(),
+        location: LatLng(
+          0,
+          0,
+        ),
+        text: description.text,
+        postEndTime: dateTime,
+        creator: "Testing");
+
     //TODO : Upload Data
+    Navigator.pop(context, postitem);
   }
 
   @override
@@ -94,11 +104,11 @@ class _PostingState extends State<Posting> {
                   padding: EdgeInsets.all(15),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30)),
-                  color: Colors.white,
+                  color: Theme.of(context).buttonColor,
                   child: Text(
                     "Submit",
                     style: TextStyle(
-                      color: Color.fromRGBO(54, 55, 149, 1),
+                      color: Colors.white,
                       letterSpacing: 1.5,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -155,8 +165,7 @@ class _PostingState extends State<Posting> {
           decoration: kBoxDecorationStyle,
           height: 200,
           child: TextField(
-              maxLines: null,
-
+            maxLines: null,
             controller: description,
             style: TextStyle(color: Colors.black54),
             decoration: InputDecoration(

@@ -1,3 +1,7 @@
+// import 'package:dartz/dartz.dart'; 好像跟Materialdart衝突
+
+import 'dart:ffi';
+
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterhood/ui/page/Posting.dart';
@@ -28,7 +32,15 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        buttonColor: Color(0xff2FBCA1),
+        primaryColor: Color(0xff2FBCA1),
+        backgroundColor: Color(0xff2FBCA1),
+        brightness: Brightness.light,
+        
+        textTheme: TextTheme(
+          headline1: TextStyle(fontSize:30 ,color: Color(0xff2FBCA1),fontWeight: FontWeight.w300),
+          button: TextStyle(color: Colors.white,fontSize: 12)
+        ),
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and
         // closer together (more dense) than on mobile platforms.
@@ -59,20 +71,9 @@ class _MainState extends State<Main> {
 
   @override
   void initState() {
-    // _animationController = AnimationController(
-    //   vsync: this,
-    //   duration: Duration(milliseconds: 260),
-    // );
-
-    // final curvedAnimation =
-    //     CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
-    // _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
-
     // TODO: implement initState
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +100,6 @@ class _MainState extends State<Main> {
   Row buildTripleFAB(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      
       children: <Widget>[
         Container(
           width: 75,
@@ -112,6 +112,7 @@ class _MainState extends State<Main> {
                 maxLines: 1,
                 textScaleFactor: 0.8,
               ),
+              backgroundColor: Theme.of(context).backgroundColor,
             ),
           ),
         ),
@@ -121,6 +122,7 @@ class _MainState extends State<Main> {
             width: 100,
             child: FittedBox(
               child: FloatingActionButton(
+                backgroundColor: Theme.of(context).backgroundColor,
                 onPressed: () {},
                 heroTag: "Compile",
                 child: Text(
@@ -135,13 +137,10 @@ class _MainState extends State<Main> {
           width: 75,
           child: FittedBox(
             child: FloatingActionButton(
+              backgroundColor: Theme.of(context).backgroundColor,
               heroTag: "add",
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Posting(),
-                    ));
+                helpRequest(context);
               },
               child: Icon(Icons.add),
             ),
@@ -150,74 +149,74 @@ class _MainState extends State<Main> {
       ],
     );
   }
-}
 
-class BubbleFloat extends StatelessWidget {
-  const BubbleFloat({
-    Key key,
-    @required AnimationController animationController,
-    @required Animation<double> animation,
-  })  : _animationController = animationController,
-        _animation = animation,
-        super(key: key);
+  void helpRequest(BuildContext context) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Posting(),
+        ));
 
-  final AnimationController _animationController;
-  final Animation<double> _animation;
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionBubble(
-      // Menu items
-      items: <Bubble>[
-        // Floating action menu item
-        Bubble(
-          title: "Story",
-          iconColor: Colors.white,
-          bubbleColor: Colors.blue,
-          icon: Icons.book,
-          titleStyle: TextStyle(fontSize: 16, color: Colors.white),
-          onPress: () {
-            _animationController.reverse();
-          },
-        ),
-        // Floating action menu item
-        Bubble(
-          title: "Picture",
-          iconColor: Colors.white,
-          bubbleColor: Colors.blue,
-          icon: Icons.photo,
-          titleStyle: TextStyle(fontSize: 16, color: Colors.white),
-          onPress: () {
-            _animationController.reverse();
-          },
-        ),
-        //Floating action menu item
-        Bubble(
-          title: "Action",
-          iconColor: Colors.white,
-          bubbleColor: Colors.blue,
-          icon: Icons.work,
-          titleStyle: TextStyle(fontSize: 16, color: Colors.white),
-          onPress: () {
-            _animationController.reverse();
-          },
-        ),
-      ],
-
-      // animation controller
-      animation: _animation,
-
-      // On pressed change animation state
-      onPress: () => _animationController.isCompleted
-          ? _animationController.reverse()
-          : _animationController.forward(),
-
-      // Floating Action button Icon color
-      iconColor: Colors.white,
-
-      // Flaoting Action button Icon
-      iconData: Icons.share,
-      backGroundColor: Colors.blue,
-    );
+    showDialog(
+        context: context,
+        builder: (context) => SimpleDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              children: <Widget>[
+                Container(
+                    margin: EdgeInsets.only(top: 15),
+                    child: Text(
+                      "Send Success",
+                      style: Theme.of(context).textTheme.headline1,
+                      textAlign: TextAlign.center,
+                    )),
+                Container(
+                  margin: EdgeInsets.all(30),
+                  height: 200,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 0.5),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                          child: ListTile(
+                        leading: Container(
+                          width: 45,
+                          height: 45,
+                          decoration: BoxDecoration(
+                              color: Colors.grey, shape: BoxShape.circle),
+                        ),
+                        title: Text(result.creator),
+                        subtitle: Text("LA"),
+                      )),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          "Testing Description Testing Description Testing Description Testing Description Testing Description",
+                          maxLines: null,
+                          style: TextStyle(),
+                        ),
+                        alignment: Alignment.topLeft,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 30),
+                  width: 60,
+                  height: 50,
+                  child: MaterialButton(
+                    color: Colors.tealAccent[700],
+                    child: Text("Done",style: TextStyle(fontSize: 15,color: Colors.white),),
+                    onPressed: () {},
+                    shape: StadiumBorder(),
+                  ),
+                )
+              ],
+            ));
   }
 }
