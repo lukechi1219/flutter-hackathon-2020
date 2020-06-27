@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -42,9 +43,6 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  Animation<double> _animation;
-  AnimationController _animationController;
-
   int _currentindex = 0;
   final List<Widget> _pages = [
     Home(),
@@ -72,45 +70,67 @@ class _MainState extends State<Main> {
     super.initState();
   }
 
+  Widget addFab() {
+    return _currentindex == 0
+        ? FloatingActionButton(
+            heroTag: "add",
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Posting(),
+                  ));
+            },
+            child: Icon(Icons.add),
+          )
+        : null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-      //Init Floating Action Bubble
-      floatingActionButton: _currentindex == 0
-          ? FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Posting(),
-                    ));
-              },
-              child: Icon(Icons.add),
-            )
-          : null,
-
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentindex,
-        onTap: onTapped,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
-          // BottomNavigationBarItem(
-          //     icon: Icon(Icons.notifications), title: Text("Notification")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person), title: Text("Profile"))
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Container(
+            width: 50,
+            child: FittedBox(
+              child: FloatingActionButton(
+                heroTag: "Member",
+                onPressed: () {},
+                child: Text("Member"),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 150),
+            child: FloatingActionButton(
+              heroTag: "Compile",
+              child: Text("Compile"),
+            ),
+          ),
+          addFab(),
         ],
       ),
+
+      // bottomNavigationBar: BottomNavigationBar(
+      //   currentIndex: _currentindex,
+      //   onTap: onTapped,
+      //   items: [
+      //     BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
+      //     // BottomNavigationBarItem(
+      //     //     icon: Icon(Icons.notifications), title: Text("Notification")),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.person), title: Text("Profile"))
+      //   ],
+      // ),
+
       body: _pages[_currentindex],
     );
   }
 }
 
-// BubbleFloat(
-//               animation: _animation,
-//               animationController: _animationController,
-//             )
 class BubbleFloat extends StatelessWidget {
   const BubbleFloat({
     Key key,

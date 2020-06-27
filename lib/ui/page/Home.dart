@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   Location myUserLocation;
 
   GoogleMapController mapController;
@@ -18,23 +23,39 @@ class Home extends StatelessWidget {
     mapController = controller;
   }
 
-//  Marker marker = Marker();
   final Set<Marker> _markers = {};
+  bool _switch = true;
+  Widget splitter() {
+    return _switch == true
+        ? GoogleMap(
+            markers: _markers,
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: CameraPosition(
+              target: _center,
+              zoom: 15,
+            ))
+        : ListView();
+  }
 
   @override
   Widget build(BuildContext context) {
     //
     _addTestMarker();
 
-    return Center(
-      child: GoogleMap(
-          markers: _markers,
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 15,
-          )),
-    );
+    return Stack(children: <Widget>[
+      Container(child: splitter()),
+      Positioned(
+          right: 10,
+          top: 10,
+          child: Switch(
+            onChanged: (value) {
+              setState(() {
+                _switch = value;
+              });
+            },
+            value: _switch,
+          ))
+    ]);
   }
 
   /*
@@ -48,12 +69,13 @@ class Home extends StatelessWidget {
       markerId: MarkerId('testMarker' + DateTime.now().millisecond.toString()),
       position: _center,
       infoWindow: InfoWindow(
-        onTap: (){print("object");},
+        onTap: () {
+          print("object");
+        },
         title: 'Really cool place',
         snippet: '5 Star Rating',
       ),
       icon: BitmapDescriptor.defaultMarker,
-      
     ));
   }
 }
