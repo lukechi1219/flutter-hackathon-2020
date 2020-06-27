@@ -64,88 +64,69 @@ class _PostingState extends State<Posting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 35),
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "Help Request",
-                style: TextStyle(fontSize: 30),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              buildDeadlineinput(context),
-              SizedBox(
-                height: 15,
-              ),
-              buildPhoneInput(),
-              SizedBox(
-                height: 15,
-              ),
-              buildLocationinput(pickResult),
-              SizedBox(
-                height: 15,
-              ),
-              buildDescriptinput(),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 25.0),
-                      child: RaisedButton(
-                        elevation: 5,
-                        onPressed: posting,
-                        padding: EdgeInsets.all(15),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        color: Theme.of(context).buttonColor,
-                        child: Text(
-                          "Submit",
-                          style: TextStyle(
-                            color: Colors.white,
-                            letterSpacing: 1.5,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+      body: SafeArea(
+        top: true,
+        child: Container(
+          width: double.infinity,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 35),
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text("<Back"),
+                    )),
+                Text(
+                  "Help Request",
+                  style: TextStyle(fontSize: 30),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                buildDeadlineinput(context),
+                SizedBox(
+                  height: 15,
+                ),
+                buildPhoneInput(),
+                SizedBox(
+                  height: 15,
+                ),
+                buildLocationinput(pickResult),
+                SizedBox(
+                  height: 15,
+                ),
+                buildDescriptinput(),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 5.0),
+                  child: RaisedButton(
+                    elevation: 5,
+                    onPressed: posting,
+                    padding: EdgeInsets.all(15),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    color: Theme.of(context).buttonColor,
+                    child: Text(
+                      "Submit",
+                      style: TextStyle(
+                        color: Colors.white,
+                        letterSpacing: 1.5,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 25.0),
-                      child: RaisedButton(
-                        elevation: 5,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        padding: EdgeInsets.all(15),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        color: Theme.of(context).buttonColor,
-                        child: Text(
-                          "Back",
-                          style: TextStyle(
-                            color: Colors.white,
-                            letterSpacing: 1.5,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              )
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -252,7 +233,7 @@ class _PostingState extends State<Posting> {
                   Icons.timer,
                   color: Colors.black54,
                 ),
-                hintText: "Duration",
+                hintText: "Due Date",
                 hintStyle: kHintTextStyle),
           ),
         )

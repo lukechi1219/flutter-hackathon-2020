@@ -50,6 +50,7 @@ class _HomeState extends State<Home> {
           var latLng = postItem.location;
           print(
               '${postItem.text}: ${postItem.creator}, time: ${postItem.createTime}, location: (${latLng.latitude}, ${latLng.longitude})');
+            //Mr.chi 我利用原本的function接了你的mock資料上地圖了  你再看看怎麼改吧
           _addTestMarker(postItem);
         }
         print('------');
