@@ -77,11 +77,7 @@ class _HomeState extends State<Home> {
             child: FloatingActionButton(
               heroTag: "Member",
               onPressed: () {},
-              child: Text(
-                "Member",
-                maxLines: 1,
-                textScaleFactor: 0.8,
-              ),
+              child: Icon(Icons.list),
               backgroundColor: Theme.of(context).backgroundColor,
             ),
           ),
@@ -92,14 +88,12 @@ class _HomeState extends State<Home> {
             width: 100,
             child: FittedBox(
               child: FloatingActionButton(
-                backgroundColor: Theme.of(context).backgroundColor,
-                onPressed: () {},
-                heroTag: "Compile",
-                child: Text(
-                  "Compile",
-                  textScaleFactor: 0.8,
-                ),
-              ),
+                  backgroundColor: Theme.of(context).backgroundColor,
+                  onPressed: () {
+                    helpRequest(context);
+                  },
+                  heroTag: "Compile",
+                  child: Icon(Icons.add)),
             ),
           ),
         ),
@@ -109,10 +103,8 @@ class _HomeState extends State<Home> {
             child: FloatingActionButton(
               backgroundColor: Theme.of(context).backgroundColor,
               heroTag: "add",
-              onPressed: () {
-                helpRequest(context);
-              },
-              child: Icon(Icons.add),
+              onPressed: () {},
+              child: Icon(Icons.person),
             ),
           ),
         )
@@ -161,12 +153,12 @@ class _HomeState extends State<Home> {
                                 color: Colors.grey, shape: BoxShape.circle),
                           ),
                           title: Text(result.creator),
-                          subtitle: Text("LA"),
+                          subtitle: Text(result.location.toString()),
                         )),
                         Container(
                           padding: EdgeInsets.all(10),
                           child: Text(
-                            "Testing Description Testing Description Testing Description Testing Description Testing Description",
+                            "${result.text}",
                             maxLines: null,
                             style: TextStyle(),
                           ),
@@ -203,9 +195,6 @@ class _HomeState extends State<Home> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: buildTripleFAB(context),
-
-
-
       body: Stack(children: <Widget>[
         Container(
             child: FutureBuilder(

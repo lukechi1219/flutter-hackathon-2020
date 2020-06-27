@@ -50,12 +50,12 @@ class _PostingState extends State<Posting> {
     var postitem = PostItem(
         createTime: DateTime.now(),
         location: LatLng(
-          0,
-          0,
+          pickResult.geometry.location.lat,
+          pickResult.geometry.location.lng,
         ),
         text: description.text,
         postEndTime: dateTime,
-        creator: "Testing");
+        creator: "Flutter");
 
     //TODO : Upload Data
     Navigator.pop(context, postitem);
