@@ -1,7 +1,5 @@
 // import 'package:dartz/dartz.dart'; 好像跟Materialdart衝突
 
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 import 'injection_container.dart' as di;
@@ -37,9 +35,10 @@ class MyApp extends StatelessWidget {
 
         textTheme: TextTheme(
             headline1: TextStyle(
-                fontSize: 30,
-                color: Color(0xff2FBCA1),
-                fontWeight: FontWeight.w300),
+              fontSize: 30,
+              color: Color(0xff2FBCA1),
+              fontWeight: FontWeight.w300,
+            ),
             button: TextStyle(color: Colors.white, fontSize: 12)),
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and
@@ -78,5 +77,4 @@ class _MainState extends State<Main> {
   Widget build(BuildContext context) {
     return Home();
   }
-
 }
