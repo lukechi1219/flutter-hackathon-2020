@@ -8,6 +8,7 @@ class PostItem extends Equatable {
   final LatLng location;
   final String creator;
   final DateTime createTime;
+
   // 截止時間
   final DateTime postEndTime;
 
@@ -28,4 +29,15 @@ class PostItem extends Equatable {
         createTime.millisecond,
         (postEndTime == null) ? '' : postEndTime.millisecond,
       ];
+
+  Map<String, dynamic> toFirestoreDoc() {
+    return {
+      'createTime': this.createTime,
+      'creator': this.creator,
+      'latitude': this.location.latitude,
+      'longitude': this.location.longitude,
+      'postEndTime': this.postEndTime,
+      'text': this.text,
+    };
+  }
 }
