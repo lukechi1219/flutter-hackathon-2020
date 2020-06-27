@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
 //TODO:Define Center With GPS
 //  final LatLng _center = const LatLng(45.521563, -122.677433);
   // Taipei 101
-  final LatLng _center = const LatLng(25.0326811, 121.5646961);
+  LatLng _center = LatLng(25.0326811, 121.5646961);
 
   // Google Office NYC Chelsea
 //  final LatLng _center = const LatLng(40.7420835, -74.0061156);
@@ -186,6 +186,45 @@ class _HomeState extends State<Home> {
                 ],
               ));
     }
+  }
+
+  LocationData locationData;
+
+  void getNowLocation() async {
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      _center = const LatLng(25.0326811, 121.5646961);
+      if (!_serviceEnabled) {
+        _center = const LatLng(25.0326811, 121.5646961);
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      _center = const LatLng(25.0326811, 121.5646961);
+      if (_permissionGranted != PermissionStatus.granted) {
+        _center = const LatLng(25.0326811, 121.5646961);
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+    _center = LatLng(locationData.latitude, locationData.longitude);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getNowLocation();
   }
 
   @override
