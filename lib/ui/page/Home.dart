@@ -40,16 +40,20 @@ class Home extends StatelessWidget {
   /*
    * test
    */
+
+  //TODO:Create Ontap for InfoWindow
   void _addTestMarker() {
     _markers.add(Marker(
       // This marker id can be anything that uniquely identifies each marker.
       markerId: MarkerId('testMarker' + DateTime.now().millisecond.toString()),
       position: _center,
       infoWindow: InfoWindow(
+        onTap: (){print("object");},
         title: 'Really cool place',
         snippet: '5 Star Rating',
       ),
       icon: BitmapDescriptor.defaultMarker,
+      
     ));
   }
 }

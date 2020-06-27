@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
+import 'package:flutterhood/ui/page/Posting.dart';
 import 'ui/page/Notification.dart';
 import 'ui/page/Profile.dart';
 import 'ui/page/Home.dart';
@@ -40,12 +41,16 @@ class Main extends StatefulWidget {
   _MainState createState() => _MainState();
 }
 
-class _MainState extends State<Main> with SingleTickerProviderStateMixin {
+class _MainState extends State<Main> {
   Animation<double> _animation;
   AnimationController _animationController;
 
   int _currentindex = 0;
-  final List<Widget> _pages = [Home(), Notify(), Profile()];
+  final List<Widget> _pages = [
+    Home(),
+    // Notify(),
+    Profile()
+  ];
   void onTapped(int index) {
     setState(() {
       _currentindex = index;
@@ -54,14 +59,14 @@ class _MainState extends State<Main> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    _animationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 260),
-    );
+    // _animationController = AnimationController(
+    //   vsync: this,
+    //   duration: Duration(milliseconds: 260),
+    // );
 
-    final curvedAnimation =
-        CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
-    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
+    // final curvedAnimation =
+    //     CurvedAnimation(curve: Curves.easeInOut, parent: _animationController);
+    // _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation);
 
     // TODO: implement initState
     super.initState();
@@ -70,11 +75,20 @@ class _MainState extends State<Main> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
       //Init Floating Action Bubble
       floatingActionButton: _currentindex == 0
-          ? BubbleFloat(animation: _animation,animationController: _animationController,)
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Posting(),
+                    ));
+              },
+              child: Icon(Icons.add),
+            )
           : null,
 
       bottomNavigationBar: BottomNavigationBar(
@@ -82,8 +96,8 @@ class _MainState extends State<Main> with SingleTickerProviderStateMixin {
         onTap: onTapped,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), title: Text("Notification")),
+          // BottomNavigationBarItem(
+          //     icon: Icon(Icons.notifications), title: Text("Notification")),
           BottomNavigationBarItem(
               icon: Icon(Icons.person), title: Text("Profile"))
         ],
@@ -93,6 +107,10 @@ class _MainState extends State<Main> with SingleTickerProviderStateMixin {
   }
 }
 
+// BubbleFloat(
+//               animation: _animation,
+//               animationController: _animationController,
+//             )
 class BubbleFloat extends StatelessWidget {
   const BubbleFloat({
     Key key,
