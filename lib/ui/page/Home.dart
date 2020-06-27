@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import '../../data/entities/post_itrm.dart';
 import 'package:flutterhood/core/usecases/usecase.dart';
 import 'package:flutterhood/domain/usecases/get_near_by_post_items.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 import '../../injection_container.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
-
 
 class _HomeState extends State<Home> {
   Location myUserLocation;
@@ -30,7 +31,7 @@ class _HomeState extends State<Home> {
     getPostItems();
   }
 
-  void getPostItems() async {
+  Future<Set<Marker>> getPostItems() async {
     //
     GetNearByPostItems getNearByPostItems = getIt.get<GetNearByPostItems>();
 
@@ -44,18 +45,20 @@ class _HomeState extends State<Home> {
           var latLng = postItem.location;
           print(
               '${postItem.text}: ${postItem.creator}, time: ${postItem.createTime}, location: (${latLng.latitude}, ${latLng.longitude})');
+          _addTestMarker(postItem);
         }
         print('------');
       },
     );
+    return _markers;
   }
 
   final Set<Marker> _markers = {};
   bool _switch = true;
-  Widget splitter() {
+  Widget splitter(data) {
     return _switch == true
         ? GoogleMap(
-            markers: _markers,
+            markers: data,
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
               target: _center,
@@ -67,10 +70,13 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     //
-    _addTestMarker();
 
     return Stack(children: <Widget>[
-      Container(child: splitter()),
+      Container(
+          child: FutureBuilder(
+            future: getPostItems(),
+        builder: (context, snapshot) => splitter(snapshot.data),
+      )),
       Positioned(
           right: 10,
           top: 10,
@@ -90,17 +96,17 @@ class _HomeState extends State<Home> {
    */
 
   //TODO:Create Ontap for InfoWindow
-  void _addTestMarker() {
+  void _addTestMarker(PostItem postItem) {
     _markers.add(Marker(
       // This marker id can be anything that uniquely identifies each marker.
       markerId: MarkerId('testMarker' + DateTime.now().millisecond.toString()),
-      position: _center,
+      position: postItem.location,
       infoWindow: InfoWindow(
         onTap: () {
           print("object");
         },
-        title: 'Really cool place',
-        snippet: '5 Star Rating',
+        title: postItem.creator,
+        snippet: postItem.text,
       ),
       icon: BitmapDescriptor.defaultMarker,
     ));
