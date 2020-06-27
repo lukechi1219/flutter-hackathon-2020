@@ -42,4 +42,13 @@ class PostItemRepositoryImpl implements PostItemRepository {
     //
     return Right(list);
   }
+
+  @override
+  Future<Either<Failure, bool>> addPostItem({@required PostItem item}) async {
+    //
+    if (await networkInfo.isConnected) {
+      return Right(await remoteDataSource.addPostItem(item));
+    }
+    return Right(true);
+  }
 }

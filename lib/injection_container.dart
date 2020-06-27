@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
 import 'core/network/network_info.dart';
+import 'domain/usecases/add_post_item.dart';
 import 'domain/usecases/get_near_by_post_items.dart';
 
 final getIt = GetIt.instance;
@@ -16,7 +17,7 @@ Future<void> init() async {
 
   // Use cases
   getIt.registerLazySingleton(() => GetNearByPostItems(getIt()));
-//  sl.registerLazySingleton(() => AddPostItem(sl()));
+  getIt.registerLazySingleton(() => AddPostItem(getIt()));
 //  sl.registerLazySingleton(() => UpdatePostItem(sl()));
 
   // Repository

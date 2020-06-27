@@ -10,6 +10,8 @@ abstract class PostItemRemoteDataSource {
   ///
   /// Throws a [ServerException] for all error codes.
   Future<List<PostItem>> getNearByPostItems();
+
+  Future<bool> addPostItem(PostItem item);
 }
 
 class PostItemRemoteDataSourceImpl implements PostItemRemoteDataSource {
@@ -38,5 +40,17 @@ class PostItemRemoteDataSourceImpl implements PostItemRemoteDataSource {
     print('------');
 
     return Future.value([]);
+  }
+
+  @override
+  Future<bool> addPostItem(PostItem item) async {
+    //
+    var map = item.toFirestoreDoc();
+    //
+    DocumentReference ref = await Firestore.instance.collection('fh_posts').add(map);
+
+    print(ref.documentID);
+
+    return Future.value(true);
   }
 }
