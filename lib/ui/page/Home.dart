@@ -5,8 +5,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 import '../../injection_container.dart';
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
 
-class Home extends StatelessWidget {
+
+class _HomeState extends State<Home> {
   Location myUserLocation;
 
   GoogleMapController mapController;
