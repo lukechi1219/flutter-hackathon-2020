@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
+import 'package:flutter/material.dart';
 import 'package:flutterhood/ui/page/Posting.dart';
-import 'ui/page/Notification.dart';
-import 'ui/page/Profile.dart';
-import 'ui/page/Home.dart';
 
-void main() {
+import 'injection_container.dart' as di;
+import 'ui/page/Home.dart';
+import 'ui/page/Profile.dart';
+
+void main() async {
+  await di.init();
   runApp(MyApp());
 }
 
@@ -98,8 +100,7 @@ class _MainState extends State<Main> {
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
           // BottomNavigationBarItem(
           //     icon: Icon(Icons.notifications), title: Text("Notification")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person), title: Text("Profile"))
+          BottomNavigationBarItem(icon: Icon(Icons.person), title: Text("Profile"))
         ],
       ),
       body: _pages[_currentindex],
