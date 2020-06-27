@@ -36,11 +36,13 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xff2FBCA1),
         backgroundColor: Color(0xff2FBCA1),
         brightness: Brightness.light,
-        
+
         textTheme: TextTheme(
-          headline1: TextStyle(fontSize:30 ,color: Color(0xff2FBCA1),fontWeight: FontWeight.w300),
-          button: TextStyle(color: Colors.white,fontSize: 12)
-        ),
+            headline1: TextStyle(
+                fontSize: 30,
+                color: Color(0xff2FBCA1),
+                fontWeight: FontWeight.w300),
+            button: TextStyle(color: Colors.white, fontSize: 12)),
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and
         // closer together (more dense) than on mobile platforms.
@@ -211,8 +213,13 @@ class _MainState extends State<Main> {
                   height: 50,
                   child: MaterialButton(
                     color: Colors.tealAccent[700],
-                    child: Text("Done",style: TextStyle(fontSize: 15,color: Colors.white),),
-                    onPressed: () {},
+                    child: Text(
+                      "Done",
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     shape: StadiumBorder(),
                   ),
                 )
