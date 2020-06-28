@@ -35,8 +35,6 @@ class _HomeState extends State<Home> {
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
-
-    _controller.complete(controller);
   }
 
   Future<Set<Marker>> getPostItems() async {
@@ -49,6 +47,7 @@ class _HomeState extends State<Home> {
       (failure) => print(failure),
       (items) {
         //
+        int oldSize = _markers.length;
         _markers.clear();
         print('------');
         for (var postItem in items) {
@@ -60,9 +59,11 @@ class _HomeState extends State<Home> {
         }
         print('------');
 
-        setState(() {
-          print('set state');
-        });
+        if (oldSize != _markers.length) {
+          setState(() {
+            print('set state');
+          });
+        }
       },
     );
     return _markers;
@@ -70,7 +71,6 @@ class _HomeState extends State<Home> {
 
   /*
    */
-  Completer<GoogleMapController> _controller = Completer();
   final Set<Marker> _markers = {};
 
   // map is true
@@ -232,7 +232,7 @@ class _HomeState extends State<Home> {
 
     LocationData locationData = await location.getLocation();
     _center = LatLng(locationData.latitude, locationData.longitude);
-    updatePinOnMap();
+//    updatePinOnMap();
     return _center;
   }
 
@@ -245,8 +245,7 @@ class _HomeState extends State<Home> {
       target: _center,
     );
 
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
+    mapController.animateCamera(CameraUpdate.newCameraPosition(cPosition));
 
     setState(() {
       print('set state');
@@ -261,7 +260,10 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     getNowLocation();
-    getPostItems();
+
+    Timer.periodic(Duration(seconds: 10), (timer) {
+      getPostItems();
+    });
   }
 
   @override
@@ -279,8 +281,7 @@ class _HomeState extends State<Home> {
                 child: FutureBuilder(
                     future: getPostItems(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.active &&
-                          snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.connectionState != ConnectionState.done) {
                         return Center(
                           child: CircularProgressIndicator(),
                         );
@@ -288,7 +289,7 @@ class _HomeState extends State<Home> {
 
                       if (snapshot.hasData) {
                         print(snapshot.data);
-                        return _mapOrListSwitch == true
+                        return _mapOrListSwitch
                             ? GoogleMap(
                                 markers: snapshot.data,
                                 onMapCreated: _onMapCreated,
@@ -306,7 +307,7 @@ class _HomeState extends State<Home> {
                       if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
-                      return null;
+                      return Text("Error");
                     })),
           ),
           Positioned(
