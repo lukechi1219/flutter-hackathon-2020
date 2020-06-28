@@ -82,7 +82,8 @@ class _HomeState extends State<Home> {
   /*
    */
   final Set<Marker> _markers = {};
-  bool _switch = true;
+  // map is true
+  bool _mapOrListSwitch = true;
 
   Widget splitter(data) {
     // return ;
@@ -264,7 +265,7 @@ class _HomeState extends State<Home> {
             builder: (context, latlng, child) => Container(
                 child: FutureBuilder(
               future: getPostItems(),
-              builder: (context, snapshot) => _switch == true
+              builder: (context, snapshot) => _mapOrListSwitch == true
                   ? GoogleMap(
                       markers: snapshot.data,
                       onMapCreated: _onMapCreated,
@@ -286,10 +287,10 @@ class _HomeState extends State<Home> {
               child: Switch(
                 onChanged: (value) {
                   setState(() {
-                    _switch = value;
+                    _mapOrListSwitch = value;
                   });
                 },
-                value: _switch,
+                value: _mapOrListSwitch,
               ))
         ]),
       ),
