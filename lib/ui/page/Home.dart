@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterhood/core/usecases/usecase.dart';
@@ -5,9 +8,7 @@ import 'package:flutterhood/domain/usecases/get_near_by_post_items.dart';
 import 'package:flutterhood/ui/page/Posting.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:provider/provider.dart';
-
 import '../../data/entities/post_itrm.dart';
 import '../../injection_container.dart';
 
@@ -34,6 +35,8 @@ class _HomeState extends State<Home> {
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+
+    _controller.complete(controller);
   }
 
   Future<Set<Marker>> getPostItems() async {
@@ -67,6 +70,7 @@ class _HomeState extends State<Home> {
 
   /*
    */
+  Completer<GoogleMapController> _controller = Completer();
   final Set<Marker> _markers = {};
 
   // map is true
@@ -226,9 +230,30 @@ class _HomeState extends State<Home> {
 
     LocationData locationData = await location.getLocation();
     _center = LatLng(locationData.latitude, locationData.longitude);
+    updatePinOnMap();
     return _center;
   }
 
+  /**
+   *
+   */
+  void updatePinOnMap() async {
+    CameraPosition cPosition = CameraPosition(
+      zoom: 15,
+      target: _center,
+    );
+
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
+
+    setState(() {
+      print('set state');
+    });
+  }
+
+  /**
+   *
+   */
   @override
   void initState() {
     // TODO: implement initState
