@@ -8,7 +8,7 @@ import 'package:flutterhood/domain/usecases/get_near_by_post_items.dart';
 import 'package:flutterhood/ui/page/Posting.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-
+import 'package:provider/provider.dart';
 import '../../data/entities/post_itrm.dart';
 import '../../injection_container.dart';
 
@@ -163,8 +163,8 @@ class _HomeState extends State<Home> {
                           leading: Container(
                             width: 45,
                             height: 45,
-                            decoration:
-                                BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
+                            decoration: BoxDecoration(
+                                color: Colors.grey, shape: BoxShape.circle),
                           ),
                           title: Text(result.creator),
                           subtitle: Text(result.location.toString()),
@@ -265,33 +265,61 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     //
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: buildTripleFAB(context),
-      body: Stack(children: <Widget>[
-        Container(
-          child: _mapOrListSwitch
-              ? GoogleMap(
-                  markers: _markers,
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                    target: _center,
-                    zoom: 15,
-                  ))
-              : ListView(),
-        ),
-        Positioned(
-            right: 10,
-            top: 10,
-            child: Switch(
-              onChanged: (value) {
-                setState(() {
-                  _mapOrListSwitch = value;
-                });
-              },
-              value: _mapOrListSwitch,
-            ))
-      ]),
+
+    return FutureProvider<LatLng>(
+      create: (context) => getNowLocation(),
+      child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: buildTripleFAB(context),
+        body: Stack(children: <Widget>[
+          Consumer<LatLng>(
+            builder: (context, latlng, child) => Container(
+                child: FutureBuilder(
+                    future: getPostItems(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.active &&
+                          snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if(snapshot.hasError)
+                        return Text("${snapshot.error}");
+                        print(snapshot.data);
+                        return _mapOrListSwitch == true
+                            ? GoogleMap(
+                                markers: snapshot.data,
+                                onMapCreated: _onMapCreated,
+                                initialCameraPosition: () {
+                                  if (latlng == null) {
+                                    latlng = _defaultPosition;
+                                  }
+                                  return CameraPosition(
+                                    target: latlng,
+                                    zoom: 15,
+                                  );
+                                }())
+                            : ListView();
+                      } else {
+                        return Text("${snapshot.data}");
+                      }
+                    })),
+          ),
+          Positioned(
+              right: 10,
+              top: 10,
+              child: Switch(
+                onChanged: (value) {
+                  setState(() {
+                    _mapOrListSwitch = value;
+                  });
+                },
+                value: _mapOrListSwitch,
+              ))
+        ]),
+      ),
     );
   }
 
@@ -340,6 +368,7 @@ class _HomeState extends State<Home> {
             //pop out
           },
           btnOkOnPress: () {
+            setState(() {});
             //accpet
           },
         )..show();
