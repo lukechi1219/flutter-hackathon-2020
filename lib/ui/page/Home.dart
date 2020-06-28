@@ -152,8 +152,8 @@ class _HomeState extends State<Home> {
                           leading: Container(
                             width: 45,
                             height: 45,
-                            decoration:
-                                BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
+                            decoration: BoxDecoration(
+                                color: Colors.grey, shape: BoxShape.circle),
                           ),
                           title: Text(result.creator),
                           subtitle: Text(result.location.toString()),
@@ -242,22 +242,37 @@ class _HomeState extends State<Home> {
           Consumer<LatLng>(
             builder: (context, latlng, child) => Container(
                 child: FutureBuilder(
-              future: getPostItems(),
-              builder: (context, snapshot) => _mapOrListSwitch == true
-                  ? GoogleMap(
-                      markers: snapshot.data,
-                      onMapCreated: _onMapCreated,
-                      initialCameraPosition: () {
-                        if (latlng == null) {
-                          latlng = _defaultPosition;
-                        }
-                        return CameraPosition(
-                          target: latlng,
-                          zoom: 15,
+                    future: getPostItems(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.active &&
+                          snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
                         );
-                      }())
-                  : ListView(),
-            )),
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if(snapshot.hasError)
+                        return Text("${snapshot.error}");
+                        print(snapshot.data);
+                        return _mapOrListSwitch == true
+                            ? GoogleMap(
+                                markers: snapshot.data,
+                                onMapCreated: _onMapCreated,
+                                initialCameraPosition: () {
+                                  if (latlng == null) {
+                                    latlng = _defaultPosition;
+                                  }
+                                  return CameraPosition(
+                                    target: latlng,
+                                    zoom: 15,
+                                  );
+                                }())
+                            : ListView();
+                      } else {
+                        return Text("${snapshot.data}");
+                      }
+                    })),
           ),
           Positioned(
               right: 10,
@@ -290,7 +305,7 @@ class _HomeState extends State<Home> {
         snippet: postItem.text,
       ),
       onTap: () {
-                AwesomeDialog(
+        AwesomeDialog(
           context: context,
           dialogType: DialogType.NO_HEADER,
           headerAnimationLoop: false,
@@ -320,11 +335,10 @@ class _HomeState extends State<Home> {
             //pop out
           },
           btnOkOnPress: () {
+            setState(() {});
             //accpet
           },
         )..show();
-
-
       },
       icon: BitmapDescriptor.defaultMarker,
     ));
