@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutterhood/domain/usecases/add_post_item.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:intl/intl.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 
+import '../../injection_container.dart';
 import '../../key.dart';
 import '../../data/entities/post_itrm.dart';
 
@@ -57,10 +59,34 @@ class _PostingState extends State<Posting> {
         postEndTime: dateTime,
         creator: "Flutter");
 
-    //TODO : Upload Data
-    Navigator.pop(context, postitem);
+    // Upload Data
+    addPostItem(postitem);
   }
 
+  /*
+   */
+  void addPostItem(PostItem postItem) async {
+    //
+    AddPostItem addPostItem = getIt.get<AddPostItem>();
+
+    var result = await addPostItem(Params(item: postItem));
+
+    result.fold(
+      (failure) => print(failure),
+      (success) {
+        if (success) {
+          Navigator.pop(context, postItem);
+        } else {
+          print('add to firebase failed.');
+          // TODO: show error message
+          Navigator.pop(context, postItem);
+        }
+      },
+    );
+  }
+
+  /*
+   */
   @override
   Widget build(BuildContext context) {
     return Scaffold(

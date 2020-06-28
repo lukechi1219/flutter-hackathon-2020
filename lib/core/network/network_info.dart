@@ -10,7 +10,5 @@ class NetworkInfoImpl implements NetworkInfo {
   NetworkInfoImpl(this.connectionChecker);
 
   @override
-//  Future<bool> get isConnected => connectionChecker.hasConnection;
-  // MEMO: 在 firebase 設定好之前, 先固定回傳 false
-  Future<bool> get isConnected => Future.value(false);
+  Future<bool> get isConnected => connectionChecker.hasConnection;
 }
