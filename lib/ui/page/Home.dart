@@ -26,6 +26,9 @@ class _HomeState extends State<Home> {
   // Taipei 101
   LatLng _center = LatLng(25.0326811, 121.5646961);
 
+  // Taipei 101
+  LatLng _defaultPosition = LatLng(25.0326811, 121.5646961);
+
   // Google Office NYC Chelsea
 //  final LatLng _center = const LatLng(40.7420835, -74.0061156);
 
@@ -265,10 +268,15 @@ class _HomeState extends State<Home> {
                   ? GoogleMap(
                       markers: snapshot.data,
                       onMapCreated: _onMapCreated,
-                      initialCameraPosition: CameraPosition(
-                        target: latlng,
-                        zoom: 15,
-                      ))
+                      initialCameraPosition: () {
+                        if (latlng == null) {
+                          latlng = _defaultPosition;
+                        }
+                        return CameraPosition(
+                          target: latlng,
+                          zoom: 15,
+                        );
+                      }())
                   : ListView(),
             )),
           ),
