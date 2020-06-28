@@ -39,15 +39,18 @@ class PostItemRemoteDataSourceImpl implements PostItemRemoteDataSource {
       for (var entry in doc.data.entries) {
         print('${entry.key}: ${entry.value}');
       }
+      var _postEndTime =
+          (doc.data['postEndTime'] == null) ? null : doc.data['postEndTime'].toDate();
+
       var postItem = PostItem(
         text: doc.data['text'],
         location: LatLng(
-          double.parse(doc.data['latitude']),
-          double.parse(doc.data['longitude']),
+          doc.data['latitude'],
+          doc.data['longitude'],
         ),
         creator: doc.data['creator'],
-        createTime: doc.data['createTime'],
-        postEndTime: doc.data['postEndTime'],
+        createTime: doc.data['createTime'].toDate(),
+        postEndTime: _postEndTime,
       );
       list.add(postItem);
       print('------');
