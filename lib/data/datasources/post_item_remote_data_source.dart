@@ -36,8 +36,8 @@ class PostItemRemoteDataSourceImpl implements PostItemRemoteDataSource {
       for (var entry in data.data.entries) {
         print('${entry.key}: ${entry.value}');
       }
+      print('------');
     }
-    print('------');
 
     return Future.value([]);
   }
