@@ -42,9 +42,11 @@ class _HomeState extends State<Home> {
 
     final failureOrPostItems = await getNearByPostItems(NoParams());
 
-    failureOrPostItems.fold(
+    await failureOrPostItems.fold(
       (failure) => print(failure),
       (items) {
+        //
+        _markers.clear();
         print('------');
         for (var postItem in items) {
           var latLng = postItem.location;
