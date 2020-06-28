@@ -45,5 +45,9 @@
 		<string>This app needs your location to test the location feature of the Google Maps location picker plugin.</string>
 		<key>io.flutter.embedded_views_preview</key>
 		<true/>
+		<key>NSLocationAlwaysUsageDescription</key>
+        <string>Needed to access location</string>
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>Needed to access location</string>
 	</dict>
 </plist>
