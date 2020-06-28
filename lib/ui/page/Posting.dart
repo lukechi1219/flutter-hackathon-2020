@@ -50,14 +50,17 @@ class _PostingState extends State<Posting> {
 
   void posting() {
     var postitem = PostItem(
-        createTime: DateTime.now(),
-        location: LatLng(
-          pickResult.geometry.location.lat,
-          pickResult.geometry.location.lng,
-        ),
-        text: description.text,
-        postEndTime: dateTime,
-        creator: "Flutter");
+      createTime: DateTime.now(),
+      location: LatLng(
+        pickResult.geometry.location.lat,
+        pickResult.geometry.location.lng,
+      ),
+      text: description.text,
+      postEndTime: dateTime,
+      creator: "Flutter",
+      phone: phone.text,
+      address: location.text,
+    );
 
     // Upload Data
     addPostItem(postitem);

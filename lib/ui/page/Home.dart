@@ -241,7 +241,7 @@ class _HomeState extends State<Home> {
    */
   void updatePinOnMap() async {
     CameraPosition cPosition = CameraPosition(
-      zoom: 12,
+      zoom: 16,
       target: _center,
     );
 
@@ -299,7 +299,7 @@ class _HomeState extends State<Home> {
                                   }
                                   return CameraPosition(
                                     target: latlng,
-                                    zoom: 15,
+                                    zoom: 16,
                                   );
                                 }())
                             : ListView();
@@ -331,6 +331,59 @@ class _HomeState extends State<Home> {
    */
 
   void _addTestMarker(PostItem postItem) {
+    //
+    var dialog = (PostItem _postItem) {
+      return AwesomeDialog(
+        context: context,
+        dialogType: DialogType.NO_HEADER,
+        headerAnimationLoop: false,
+        btnOk: MaterialButton(
+          child: Text('I want to help.'),
+          onPressed: () {
+            setState(() {});
+            //accpet
+          },
+        ),
+        body: Column(
+          children: <Widget>[
+            //title
+            Text(
+              _postItem.creator,
+              textScaleFactor: 1.5,
+            ),
+            Text(
+              _postItem.address,
+              textScaleFactor: 1.0,
+            ),
+            Text(
+              _postItem.phone,
+              textScaleFactor: 1.0,
+            ),
+            //subtitle
+            Text(
+              _postItem.postEndTime.toString(),
+              textScaleFactor: 1.0,
+            ),
+            Divider(
+              height: 10,
+            ),
+            //describe
+            Text(
+              _postItem.text,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        btnCancelOnPress: () {
+          //pop out
+        },
+//        btnOkOnPress: () {
+//          setState(() {});
+//          //accpet
+//        },
+      );
+    }(postItem);
+    //
     _markers.add(Marker(
       // This marker id can be anything that uniquely identifies each marker.
       markerId: MarkerId('testMarker' + DateTime.now().millisecond.toString()),
@@ -338,43 +391,10 @@ class _HomeState extends State<Home> {
       infoWindow: InfoWindow(
         onTap: () {},
         title: postItem.creator,
-        snippet: postItem.text,
+//        snippet: postItem.text,
       ),
       onTap: () {
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.NO_HEADER,
-          headerAnimationLoop: false,
-          body: Column(
-            children: <Widget>[
-              //title
-              Text(
-                postItem.creator,
-                textScaleFactor: 1.5,
-              ),
-              //subtitle
-              Text(
-                postItem.text,
-                textScaleFactor: 1.0,
-              ),
-              Divider(
-                height: 10,
-              ),
-              //describe
-              Text(
-                '${postItem.text}',
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          btnCancelOnPress: () {
-            //pop out
-          },
-          btnOkOnPress: () {
-            setState(() {});
-            //accpet
-          },
-        )..show();
+        dialog.show();
       },
       icon: BitmapDescriptor.defaultMarker,
     ));
