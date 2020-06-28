@@ -285,8 +285,7 @@ class _HomeState extends State<Home> {
                       }
 
                       if (snapshot.connectionState == ConnectionState.done) {
-                        if(snapshot.hasError)
-                        return Text("${snapshot.error}");
+                        if (snapshot.hasError) return Text("${snapshot.error}");
                         print(snapshot.data);
                         return _mapOrListSwitch == true
                             ? GoogleMap(
@@ -303,7 +302,20 @@ class _HomeState extends State<Home> {
                                 }())
                             : ListView();
                       } else {
-                        return Text("${snapshot.data}");
+                        return _mapOrListSwitch == true
+                            ? GoogleMap(
+                                markers: snapshot.data,
+                                onMapCreated: _onMapCreated,
+                                initialCameraPosition: () {
+                                  if (latlng == null) {
+                                    latlng = _defaultPosition;
+                                  }
+                                  return CameraPosition(
+                                    target: latlng,
+                                    zoom: 15,
+                                  );
+                                }())
+                            : ListView();
                       }
                     })),
           ),
