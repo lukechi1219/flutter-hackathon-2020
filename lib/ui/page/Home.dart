@@ -42,9 +42,11 @@ class _HomeState extends State<Home> {
 
     final failureOrPostItems = await getNearByPostItems(NoParams());
 
-    failureOrPostItems.fold(
+    await failureOrPostItems.fold(
       (failure) => print(failure),
       (items) {
+        //
+        _markers.clear();
         print('------');
         for (var postItem in items) {
           var latLng = postItem.location;
@@ -54,6 +56,10 @@ class _HomeState extends State<Home> {
           _addTestMarker(postItem);
         }
         print('------');
+
+        setState(() {
+          print('set state');
+        });
       },
     );
     return _markers;
@@ -62,6 +68,7 @@ class _HomeState extends State<Home> {
   /*
    */
   final Set<Marker> _markers = {};
+
   // map is true
   bool _mapOrListSwitch = true;
 
@@ -227,6 +234,7 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     getNowLocation();
+    getPostItems();
   }
 
   @override
