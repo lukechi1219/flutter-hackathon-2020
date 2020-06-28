@@ -1,6 +1,7 @@
 // import 'package:dartz/dartz.dart'; 好像跟Materialdart衝突
 
 import 'package:flutter/material.dart';
+import 'package:flutterhood/ui/page/Landing.dart';
 
 import 'injection_container.dart' as di;
 import 'ui/page/Home.dart';
