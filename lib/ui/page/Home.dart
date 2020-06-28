@@ -164,7 +164,9 @@ class _HomeState extends State<Home> {
                             width: 45,
                             height: 45,
                             decoration: BoxDecoration(
-                                color: Colors.grey, shape: BoxShape.circle),
+                              color: Colors.grey,
+                              shape: BoxShape.circle,
+                            ),
                           ),
                           title: Text(result.creator),
                           subtitle: Text(result.location.toString()),
@@ -239,7 +241,7 @@ class _HomeState extends State<Home> {
    */
   void updatePinOnMap() async {
     CameraPosition cPosition = CameraPosition(
-      zoom: 15,
+      zoom: 12,
       target: _center,
     );
 
@@ -285,7 +287,9 @@ class _HomeState extends State<Home> {
                       }
 
                       if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasError) return Text("${snapshot.error}");
+                        if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        }
                         print(snapshot.data);
                         return _mapOrListSwitch == true
                             ? GoogleMap(
