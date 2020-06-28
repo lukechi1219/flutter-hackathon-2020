@@ -290,7 +290,7 @@ class _HomeState extends State<Home> {
         snippet: postItem.text,
       ),
       onTap: () {
-                AwesomeDialog(
+        AwesomeDialog(
           context: context,
           dialogType: DialogType.NO_HEADER,
           headerAnimationLoop: false,
@@ -323,8 +323,6 @@ class _HomeState extends State<Home> {
             //accpet
           },
         )..show();
-
-
       },
       icon: BitmapDescriptor.defaultMarker,
     ));
