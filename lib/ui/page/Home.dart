@@ -239,7 +239,7 @@ class _HomeState extends State<Home> {
    */
   void updatePinOnMap() async {
     CameraPosition cPosition = CameraPosition(
-      zoom: 15,
+      zoom: 12,
       target: _center,
     );
 
