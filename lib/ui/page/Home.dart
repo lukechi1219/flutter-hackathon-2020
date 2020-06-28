@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterhood/domain/usecases/add_post_item.dart';
-import 'package:flutterhood/ui/page/Posting.dart';
-import '../../data/entities/post_itrm.dart';
 import 'package:flutterhood/core/usecases/usecase.dart';
 import 'package:flutterhood/domain/usecases/get_near_by_post_items.dart';
+import 'package:flutterhood/ui/page/Posting.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-
-import '../../injection_container.dart';
 import 'package:provider/provider.dart';
+
+import '../../data/entities/post_itrm.dart';
+import '../../injection_container.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -34,9 +33,6 @@ class _HomeState extends State<Home> {
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
-
-    // test
-//    addPostItem();
   }
 
   Future<Set<Marker>> getPostItems() async {
@@ -60,24 +56,6 @@ class _HomeState extends State<Home> {
       },
     );
     return _markers;
-  }
-
-  /*
-   */
-  void addPostItem() async {
-    //
-    AddPostItem addPostItem = getIt.get<AddPostItem>();
-
-    var postItem = PostItem(
-      text: 'Test Add',
-      creator: 'Luke',
-      location: LatLng(25.0326811, 121.5646961),
-      createTime: DateTime.now(),
-    );
-
-    var result = await addPostItem(Params(item: postItem));
-
-    print(result);
   }
 
   /*

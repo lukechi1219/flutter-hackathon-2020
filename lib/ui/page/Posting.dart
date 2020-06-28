@@ -112,7 +112,8 @@ class _PostingState extends State<Posting> {
                     onPressed: posting,
                     padding: EdgeInsets.all(15),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30)),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                     color: Theme.of(context).buttonColor,
                     child: Text(
                       "Submit",
@@ -244,7 +245,10 @@ class _PostingState extends State<Posting> {
   static final kInitialPosition = LatLng(25.0326811, 121.5646961);
 
   void _waitlocationchoose(
-      BuildContext context, TextEditingController controller) async {
+    BuildContext context,
+    TextEditingController controller,
+  ) async {
+    //
     pickResult = await Navigator.push(
       context,
       MaterialPageRoute(
