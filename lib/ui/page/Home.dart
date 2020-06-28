@@ -56,6 +56,10 @@ class _HomeState extends State<Home> {
           _addTestMarker(postItem);
         }
         print('------');
+
+        setState(() {
+          print('set state');
+        });
       },
     );
     return _markers;
@@ -64,6 +68,7 @@ class _HomeState extends State<Home> {
   /*
    */
   final Set<Marker> _markers = {};
+
   // map is true
   bool _mapOrListSwitch = true;
 
@@ -229,51 +234,39 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     getNowLocation();
+    getPostItems();
   }
 
   @override
   Widget build(BuildContext context) {
     //
-
-    return FutureProvider<LatLng>(
-      create: (context) => getNowLocation(),
-      child: Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: buildTripleFAB(context),
-        body: Stack(children: <Widget>[
-          Consumer<LatLng>(
-            builder: (context, latlng, child) => Container(
-                child: FutureBuilder(
-              future: getPostItems(),
-              builder: (context, snapshot) => _mapOrListSwitch == true
-                  ? GoogleMap(
-                      markers: snapshot.data,
-                      onMapCreated: _onMapCreated,
-                      initialCameraPosition: () {
-                        if (latlng == null) {
-                          latlng = _defaultPosition;
-                        }
-                        return CameraPosition(
-                          target: latlng,
-                          zoom: 15,
-                        );
-                      }())
-                  : ListView(),
-            )),
-          ),
-          Positioned(
-              right: 10,
-              top: 10,
-              child: Switch(
-                onChanged: (value) {
-                  setState(() {
-                    _mapOrListSwitch = value;
-                  });
-                },
-                value: _mapOrListSwitch,
-              ))
-        ]),
-      ),
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: buildTripleFAB(context),
+      body: Stack(children: <Widget>[
+        Container(
+          child: _mapOrListSwitch == true
+              ? GoogleMap(
+                  markers: _markers,
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: _center,
+                    zoom: 15,
+                  ))
+              : ListView(),
+        ),
+        Positioned(
+            right: 10,
+            top: 10,
+            child: Switch(
+              onChanged: (value) {
+                setState(() {
+                  _mapOrListSwitch = value;
+                });
+              },
+              value: _mapOrListSwitch,
+            ))
+      ]),
     );
   }
 
