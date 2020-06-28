@@ -338,11 +338,12 @@ class _HomeState extends State<Home> {
         dialogType: DialogType.NO_HEADER,
         headerAnimationLoop: false,
         btnOk: MaterialButton(
+          color: Colors.tealAccent[700],
           child: Text('I want to help.'),
           onPressed: () {
-            setState(() {});
-            //accpet
+            // nothing
           },
+          shape: StadiumBorder(),
         ),
         body: Column(
           children: <Widget>[
@@ -364,7 +365,13 @@ class _HomeState extends State<Home> {
               _postItem.postEndTime.toString(),
               textScaleFactor: 1.0,
             ),
+            SizedBox(
+              height: 10,
+            ),
             Divider(
+              height: 10,
+            ),
+            SizedBox(
               height: 10,
             ),
             //describe
@@ -377,10 +384,10 @@ class _HomeState extends State<Home> {
         btnCancelOnPress: () {
           //pop out
         },
-//        btnOkOnPress: () {
-//          setState(() {});
-//          //accpet
-//        },
+        btnOkOnPress: () {
+          setState(() {});
+          //accpet
+        },
       );
     }(postItem);
     //
