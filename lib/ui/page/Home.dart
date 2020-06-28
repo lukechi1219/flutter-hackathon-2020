@@ -53,6 +53,7 @@ class _HomeState extends State<Home> {
           var latLng = postItem.location;
           print(
               '${postItem.text}: ${postItem.creator}, time: ${postItem.createTime}, location: (${latLng.latitude}, ${latLng.longitude})');
+          //
           _addTestMarker(postItem);
         }
         print('------');
@@ -211,8 +212,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  LocationData locationData;
-
   Future<LatLng> getNowLocation() async {
     Location location = new Location();
 
@@ -239,7 +238,7 @@ class _HomeState extends State<Home> {
       }
     }
 
-    locationData = await location.getLocation();
+    LocationData locationData = await location.getLocation();
     _center = LatLng(locationData.latitude, locationData.longitude);
     return _center;
   }
