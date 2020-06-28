@@ -23,7 +23,7 @@ class PostItemRemoteDataSourceImpl implements PostItemRemoteDataSource {
   @override
   Future<List<PostItem>> getNearByPostItems() async {
     QuerySnapshot snapshot =
-        await Firestore.instance.collection('fh_posts').snapshots().first;
+        await Firestore.instance.collection('fh_posts').getDocuments();
 
     print(snapshot.runtimeType);
 
