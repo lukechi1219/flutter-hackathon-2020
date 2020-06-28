@@ -7,6 +7,7 @@ import 'package:flutterhood/core/usecases/usecase.dart';
 import 'package:flutterhood/domain/usecases/get_near_by_post_items.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../../injection_container.dart';
 import 'package:provider/provider.dart';
@@ -311,24 +312,41 @@ class _HomeState extends State<Home> {
         snippet: postItem.text,
       ),
       onTap: () {
-        //TODO : 重做UI
-        showCupertinoModalPopup(
-            context: context,
-            builder: (cxt) => CupertinoActionSheet(
-                  title: Text(
-                    postItem.creator,
-                    textScaleFactor: 1.5,
-                  ),
-                  message: Text(
-                    postItem.text,
-                  ),
-                  cancelButton: CupertinoActionSheetAction(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("Accept"),
-                  ),
-                ));
+                AwesomeDialog(
+          context: context,
+          dialogType: DialogType.NO_HEADER,
+          headerAnimationLoop: false,
+          body: Column(
+            children: <Widget>[
+              //title
+              Text(
+                postItem.creator,
+                textScaleFactor: 1.5,
+              ),
+              //subtitle
+              Text(
+                postItem.text,
+                textScaleFactor: 1.0,
+              ),
+              Divider(
+                height: 10,
+              ),
+              //describe
+              Text(
+                '${postItem.text}',
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          btnCancelOnPress: () {
+            //pop out
+          },
+          btnOkOnPress: () {
+            //accpet
+          },
+        )..show();
+
+
       },
       icon: BitmapDescriptor.defaultMarker,
     ));
