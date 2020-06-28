@@ -7,6 +7,8 @@ class PostItem extends Equatable {
   final String text;
   final LatLng location;
   final String creator;
+  final String phone;
+  final String address;
   final DateTime createTime;
 
   // 截止時間
@@ -16,6 +18,8 @@ class PostItem extends Equatable {
     @required this.text,
     @required this.location,
     @required this.creator,
+    @required this.phone,
+    @required this.address,
     @required this.createTime,
     // 如果是接單 才有 截止時間. 純發佈消息不一定要有截止時間
     this.postEndTime,
@@ -26,6 +30,8 @@ class PostItem extends Equatable {
         text,
         location.toString(),
         creator,
+        phone,
+        address,
         createTime.millisecond,
         (postEndTime == null) ? '' : postEndTime.millisecond,
       ];
@@ -36,6 +42,8 @@ class PostItem extends Equatable {
       'creator': this.creator,
       'latitude': this.location.latitude,
       'longitude': this.location.longitude,
+      'phone': this.phone,
+      'address': this.address,
       'postEndTime': this.postEndTime,
       'text': this.text,
     };

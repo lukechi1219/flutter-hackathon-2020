@@ -37,6 +37,8 @@ class PostItemRepositoryImpl implements PostItemRepository {
       text: 'Help!',
       location: LatLng(25.0326811, 121.5646961),
       creator: 'Luke',
+      phone: '123',
+      address: 'test',
       createTime: DateTime.now(),
     ));
     //

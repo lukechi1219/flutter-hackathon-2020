@@ -49,6 +49,8 @@ class PostItemRemoteDataSourceImpl implements PostItemRemoteDataSource {
           doc.data['longitude'],
         ),
         creator: doc.data['creator'],
+        phone: doc.data['phone'],
+        address: doc.data['address'],
         createTime: doc.data['createTime'].toDate(),
         postEndTime: _postEndTime,
       );
