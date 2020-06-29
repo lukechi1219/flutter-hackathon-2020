@@ -261,9 +261,9 @@ class _HomeState extends State<Home> {
     super.initState();
     getNowLocation();
 
-    Timer.periodic(Duration(seconds: 10), (timer) {
-      getPostItems();
-    });
+//    Timer.periodic(Duration(seconds: 10), (timer) {
+//      getPostItems();
+//    });
   }
 
   @override
